@@ -4,6 +4,7 @@ import { ipcMainHandle, isDev } from "./util.js";
 import { getAssetPath, getPreloadPath, getUIPath } from "./pathResolver.js";
 import { getStaticData, pollResources } from "./resourseManager.js";
 import path from "path";
+import { createTray } from "./tray.js";
 
 app.commandLine.appendSwitch("disable-gpu");
 app.commandLine.appendSwitch("disable-software-rasterizer");
@@ -13,7 +14,7 @@ app.on("ready", () => {
       preload: getPreloadPath(),
     },
     // disables default system frame (dont do this if you want a proper working menu bar)
-    frame: false,
+    frame: true,
   });
   if (isDev()) {
     mainWindow.loadURL("http://localhost:5123");
@@ -28,10 +29,30 @@ app.on("ready", () => {
 
   //darwin => macos
 
-  new Tray(
-    path.join(
-      getAssetPath(),
-      process.platform == "darwin" ? "trayIconTemplate.png" : "trayIcon.png"
-    )
-  );
+  createTray(mainWindow);
+
+  handleCloseEvents(mainWindow);
 });
+
+function handleCloseEvents(mainWindow: BrowserWindow) {
+  let willClose = false;
+
+  mainWindow.on("close", (e) => {
+    if (willClose) {
+      return;
+    }
+    e.preventDefault();
+    mainWindow.hide();
+    if (app.dock) {
+      app.dock.hide();
+    }
+  });
+
+  app.on("before-quit", () => {
+    willClose = true;
+  });
+
+  mainWindow.on("show", () => {
+    willClose = false;
+  });
+}
