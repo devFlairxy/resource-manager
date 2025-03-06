@@ -1,9 +1,8 @@
 //d f
-import { app, BrowserWindow, ipcMain, Menu, Tray } from "electron";
-import { ipcMainHandle, isDev } from "./util.js";
-import { getAssetPath, getPreloadPath, getUIPath } from "./pathResolver.js";
+import { app, BrowserWindow } from "electron";
+import { ipcMainHandle, ipcMainOn, isDev } from "./util.js";
+import { getPreloadPath, getUIPath } from "./pathResolver.js";
 import { getStaticData, pollResources } from "./resourseManager.js";
-import path from "path";
 import { createTray } from "./tray.js";
 import { createMenu } from "./menu.js";
 
@@ -28,6 +27,19 @@ app.on("ready", () => {
   pollResources(mainWindow);
   ipcMainHandle("getStaticData", () => {
     return getStaticData();
+  });
+  ipcMainOn("sendFrameAction", (payload) => {
+    switch (payload) {
+      case "CLOSE":
+        mainWindow.close();
+        break;
+      case "MAXIMIZE":
+        mainWindow.maximize();
+        break;
+      case "MINIMIZE":
+        mainWindow.minimize();
+        break;
+    }
   });
 
   //darwin => macos

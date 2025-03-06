@@ -4,6 +4,26 @@ import "./App.css";
 import { useStatistics } from "./useStatistics";
 import { Chart } from "./Charts";
 
+function Header() {
+  return (
+    <header>
+      <button
+        id="close"
+        onClick={() => window.electron.sendFrameAction("CLOSE")}
+      />
+      <button
+        id="minimize"
+        onClick={() => window.electron.sendFrameAction("MINIMIZE")}
+      />
+      <button
+        id="maximize"
+        onClick={() => window.electron.sendFrameAction("MAXIMIZE")}
+      />
+    </header>
+  );
+}
+
+
 function App() {
   const [count, setCount] = useState(0);
   const statistics = useStatistics(10);
@@ -37,6 +57,7 @@ function App() {
     }, []);
     return (
       <>
+        <Header />
         <div style={{ height: 120 }}>
           <Chart
             data={activeUsages}

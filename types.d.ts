@@ -32,6 +32,6 @@ interface Window {
     subscribeChangeView: (
       callback: (view: View) => void
     ) => UnsubscribeFunction;
-    // sendFrameAction: (payload: FrameWindowAction) => void;
+    sendFrameAction: (payload: FrameWindowAction) => void;
   };
 }
