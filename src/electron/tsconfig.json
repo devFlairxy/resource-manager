@@ -5,7 +5,8 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "outDir": "../../dist-electron",
-     "moduleResolution": "bundler",
+    "moduleResolution": "bundler",
+    "types": ["../../types"]
 
   },
 }
