@@ -20,7 +20,7 @@ app.on("ready", () => {
     mainWindow.loadFile(getUIPath());
   }
 
-  // pollResources(mainWindow);
+  pollResources(mainWindow);
   ipcMainHandle("getStaticData", () => {
     return getStaticData();
   });
