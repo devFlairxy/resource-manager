@@ -1,4 +1,3 @@
-//d f
 import { app, BrowserWindow } from "electron";
 import { ipcMainHandle, ipcMainOn, isDev } from "./util.js";
 import { getPreloadPath, getUIPath } from "./pathResolver.js";
